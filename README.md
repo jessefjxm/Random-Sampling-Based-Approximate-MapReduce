@@ -1,2 +1,2 @@
-# Random-Sampling-Based-Approximate-MapReduce
+# Random Sampling Based Approximate MapReduce
 A Random Sampling Based General Approximation Solution for MapReduce
