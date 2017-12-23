@@ -27,12 +27,23 @@ To be mentioned that currently we open ZooKeeper support in default, so you may 
 
 Take a look of one of our examples, like RandomizedWordCount. What you need is a setup of our util before Job created, assign a randomized InputFormat when initilizing Job (currently we offer a Text and a XML InputFormat, but you can also extends them in similar sructure), and fetch results after the whole Job is done.
 
-## Analysis the results
+## Running randomized tasks and save the result
 
+You can now run our randomized examples as normal MapReduce task.
+```
+hadoop jar $HADOOP_EXAMPLE_LOC $CLASS_NAME $INPUT_FILE $OUTPUT_FILE $RATIO
+```
 We save one part of our results in ZooKeeper file system -- sampling status per RecordReader, and another in standard system output for more flexible manage. We use pipe to save second type of results in a text file:
 ```
 hadoop jar $HADOOP_EXAMPLE_LOC $CLASS_NAME $INPUT_FILE $OUTPUT_FILE $RATIO | tail >> ~/$OUTPUT_DIR/rate$RATIO/result.txt
 ```
 You can take a look of our .sh scripts for more detail.
 
+## Analysis the results
 
+We develop a handful tool called RSMRResultComparator to compare the results for same input under different sampling ratios. It reads outputs which follows format as we mentioned above, and calculate the actual data difference between each sampled result to the original one in easy readable format.
+
+Example:
+```
+java -jar ~/RSMRResultComparator.jar ~/output.gutenburg/rate 1.0 0.5 0.25 0.1 0.01 0.001
+```
